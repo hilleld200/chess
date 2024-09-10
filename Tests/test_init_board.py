@@ -1,7 +1,7 @@
-import src.Chess_pieces.board as board
+import src.Chess_pieces.Board as Board
 import unittest
 
-test_board = board.init_board()
+test_board = Board.init_board()
 
 class test_init_board(unittest.TestCase):
     
