@@ -117,6 +117,7 @@ def game_loop(board: list) -> bool:
 # main -=-=-=-=-=-=-=-=-=-=-=-=-=-
 def main():
     user_option = 0
+    wins = [0,0]
     while user_option != 2:
         user_option = int(input(f"1. {COLORS['blue']}Start Game\n{COLORS['reset']}2. {COLORS['red']}Exit{COLORS['reset']}\n"))
         if user_option == 1:
@@ -124,7 +125,12 @@ def main():
             print("the board is ready")
             print_board(game_board)
             black_win = game_loop(game_board)
-
+            if black_win:
+                wins[0] += 1
+            else:
+                wins[1] += 1
+        else:
+            print(f"wins: (black,white)\n\t {COLORS['green']}{wins[0]} - {wins[1]}")
 
 
 if __name__ == "__main__":
