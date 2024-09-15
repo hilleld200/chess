@@ -10,7 +10,7 @@ class chest_piece:
     """
     this is the parent class of all the chess pieces
     """
-    def __init__(self, is_black: bool, ID: int) -> None:
+    def __init__(self, is_black: bool, ID: str) -> None:
         """this is the init function of all the chess pieces
 
         Args:

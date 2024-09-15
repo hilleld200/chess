@@ -28,12 +28,13 @@ def print_board(board: list, movements: dict = {}) -> None:
     for i in range(len(board)):
         for j in range(len(board)):
             if (i, j) in movements:
-                if board[i][j] is None:
-                    print(f"{COLORS[movements[(i, j)]]}0{COLORS['reset']})", end=" ")
-                else:
-                    print(f"{COLORS[movements[(i, j)]]}{board[i][j].ID}{COLORS['reset']})", end=" ")
+                print(f"{COLORS[movements[(i, j)]]}", end="")
+            if board[i][j] is None:
+                print(f"{"0":>2}", end=" ")
             else:
-                print(0, end=" ")
+                print(f"{board[i][j].ID:>2}", end=" ")
+            print(f"{COLORS['reset']}", end="")
+            
         print()
 
 def get_troop_positions(board: list, target_all: bool = False) -> tuple:
@@ -45,19 +46,18 @@ def get_troop_positions(board: list, target_all: bool = False) -> tuple:
     Returns:
         tuple: (x, y)
     """
-    print(COLORS['blue'], COLORS['bold'], end='')
+    print(COLORS['blue'] + COLORS['bold'], end='')
     try:
-        x = int(input("x: "))
-        y = int(input("y: "))
+        x = int(input(" x: "))
+        y = int(input(" y: "))
     except ValueError:
-        print(f"{COLORS['red']} enter a NUMBER {COLORS['reset']}")
-        return get_troop_positions(board)
+        raise UserInputError("enter a NUMBER")
     print(COLORS['reset'], end='')
     
     if x < 1 or x > len(board[0]) or y < 1 or y > len(board):
         raise UserInputError("the number need to be between 1 and 8,\n e.g. (1, 1)\n\t you enter: ({}, {})".format(x, y))
     
-    if board[x - 1][y - 1] is None or target_all:
+    if board[y - 1][x - 1] is None and not target_all:
         raise UserInputError(f"the position ({x}, {y}) is empty\n you need to enter a position that have troop")
     
     return x - 1, y - 1
@@ -75,7 +75,7 @@ def game_loop(board: list) -> bool:
     
     
     while True:
-        troop_x, troop_y, target_x, target_y = -1
+        troop_x, troop_y, target_x, target_y = -1,-1,-1,-1
         
         # get the target position
         print(COLORS['blue'], end='')
@@ -92,21 +92,29 @@ def game_loop(board: list) -> bool:
             continue
         
         # show the possible movements to the user
-        selected_troop = board[troop_x][troop_y]
-        possible_movements: dict = selected_troop.show_movement(board, troop_x, troop_y)
+        selected_troop = board[troop_y][troop_x]
+        possible_movements: dict = selected_troop.show_movement(board, troop_y, troop_x)
+        
+        if len(possible_movements) == 0:
+            print(f"{COLORS['red']}The troop can't move\n\t please select another one{COLORS['reset']}")
+            continue
         
         print_board(board, possible_movements)
         while target_x == -1:
             try:
+                print("choose the target position: ")
                 target_x, target_y = get_troop_positions(board, True)
+                if (target_y, target_x) not in possible_movements:
+                    raise UserInputError(f"the position ({target_x +1}, {target_y + 1}) is not possible for this troop\n")
             except UserInputError as e:
                 print(f"{COLORS['red']}{e}{COLORS['reset']}")
-                continue
+                target_x = -1 # reset
             
-        if type(board[target_x][target_y]).__name__ == 'king':
+        if type(board[target_y][target_x]).__name__ == 'king':
             return black_turn 
-        board[target_x][target_y] = selected_troop
-        board[troop_x][troop_y] = None
+        board[target_y][target_x] = selected_troop
+        board[troop_y][troop_x] = None
+        print_board(board)
         
         
         black_turn = not black_turn
@@ -130,7 +138,7 @@ def main():
             else:
                 wins[1] += 1
         else:
-            print(f"wins: (black,white)\n\t {COLORS['green']}{wins[0]} - {wins[1]}")
+            print(f"wins: (black,white)\n\t {COLORS['green']}{wins[0]} - {wins[1]}{COLORS['reset']}")
 
 
 if __name__ == "__main__":
