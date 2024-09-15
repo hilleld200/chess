@@ -95,11 +95,19 @@ def game_loop(board: list) -> bool:
         selected_troop = board[troop_y][troop_x]
         possible_movements: dict = selected_troop.show_movement(board, troop_y, troop_x)
         
+        # check if the troop is the right color
+        if selected_troop.is_black != black_turn:
+            print(f"{COLORS['red']}The troop is not yours\n\t please select another one{COLORS['reset']}")
+            continue
+        
+        # check if there are possible movements
         if len(possible_movements) == 0:
             print(f"{COLORS['red']}The troop can't move\n\t please select another one{COLORS['reset']}")
             continue
         
+        # print the board with the movements
         print_board(board, possible_movements)
+        # get the target position
         while target_x == -1:
             try:
                 print("choose the target position: ")
@@ -110,6 +118,7 @@ def game_loop(board: list) -> bool:
                 print(f"{COLORS['red']}{e}{COLORS['reset']}")
                 target_x = -1 # reset
             
+        # check if user won
         if type(board[target_y][target_x]).__name__ == 'king':
             return black_turn 
         board[target_y][target_x] = selected_troop
