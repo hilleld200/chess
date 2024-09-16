@@ -32,9 +32,9 @@ def init_board() -> list:
     board[7][7] = rook.rook(False, "a2")
     
     # pawns
-    # for i in range(8):
-    #     board[1][i] = pawn.pawn(True, i + 9)
-    #     board[6][i] = pawn.pawn(False, i + 100)
+    for i in range(8):
+        board[1][i] = pawn.pawn(True, "P " + str(i + 1))
+        board[6][i] = pawn.pawn(False, "p " + str(i + 1))
     
     return board
 
