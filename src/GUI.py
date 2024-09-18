@@ -1,6 +1,5 @@
 import tkinter as tk
 import customtkinter as ctk
-from PIL import Image
 import pathlib
 
 
@@ -9,7 +8,7 @@ SQUARE_SIZE = 100
 
 
 class ChessGUI:
-    def __init__(self):
+    def __init__(self, click_callback: callable):
         self.window = ctk.CTk()
         self.window.title("Chess")
         self.window.geometry(f"{SQUARE_SIZE * 10}x{SQUARE_SIZE * 10}")
@@ -35,7 +34,7 @@ class ChessGUI:
         self.piece_images["white-king"] = tk.PhotoImage(file=path + "white-king.png")
 
         # Bind the left mouse button click event to a function
-        self.window.bind("<Button-1>", self.handle_click)
+        self.window.bind("<Button-1>", click_callback)
 
     def draw_board(self):
         # Draw the squares
@@ -81,19 +80,6 @@ class ChessGUI:
         self.board = board
         self.draw_board()
 
-    def handle_click(self, event):
-        # Get the coordinates of the click
-        x, y = event.x, event.y
-
-        # Determine which square was clicked
-        square_x = x // SQUARE_SIZE
-        square_y = y // SQUARE_SIZE
-        
-        if square_x < 0 or square_x > 7 or square_y < 0 or square_y > 7:
-            return
-
-        # Print the coordinates of the clicked square
-        print(f"Clicked square: {square_x}, {square_y}")
 
     def run(self):
         self.window.mainloop()
