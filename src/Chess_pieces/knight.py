@@ -2,7 +2,7 @@ import src.Chess_pieces.piece as piece
 
 class knight(piece.chest_piece):
     
-    def show_movement(self, board: list, x: int, y: int) -> dict:
+    def show_movement(self, board: list, y: int, x: int) -> dict:
         possibles_moves: dict = {}
         checks = [(-1,-2), (-2,-1), (-2,1), (-1,2), (1,-2), (2,-1), (2,1), (1,2)]
         for i, j in checks:

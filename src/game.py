@@ -93,6 +93,8 @@ class GAME:
         piece_to_move.place(x=x*SQUARE_SIZE, y=y*SQUARE_SIZE)
         self.color_square(x, y)
         self.is_black_turn = not self.is_black_turn
+        self.board[y][x] = self.board[self.selected_piece[1]][self.selected_piece[0]]
+        self.board[self.selected_piece[1]][self.selected_piece[0]] = None
         
         
     

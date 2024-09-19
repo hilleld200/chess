@@ -2,7 +2,7 @@ import src.Chess_pieces.piece as piece
 
 class bishop(piece.chest_piece):
     
-    def show_movement(self, board: list, x: int, y: int) -> dict:
+    def show_movement(self, board: list, y: int, x: int) -> dict:
         i: int = 1
         possibles_moves: dict = {}
         checks = []

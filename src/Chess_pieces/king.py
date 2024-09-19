@@ -2,7 +2,7 @@ import src.Chess_pieces.piece as piece
 
 class king(piece.chest_piece):
     
-    def show_movement(self, board: list, x: int, y: int) -> dict:
+    def show_movement(self, board: list, y: int, x: int) -> dict:
         possibles_moves: dict = {}
         for i in range(-1, 2):
             for j in range(-1, 2):
