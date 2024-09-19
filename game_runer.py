@@ -1,4 +1,5 @@
-from src.Chess_pieces import Board
+from src.Chess_pieces import board
+from src.game import *
 
 # constants -=-=-=-=-=-=-=-=-=-=-=-=-=-
 COLORS = {
@@ -14,8 +15,7 @@ COLORS = {
 }
 
 # custom exceptions -=-=-=-=-=-=-=-=-=-
-class UserInputError(Exception):
-    pass
+
 
 # functions -=-=-=-=-=-=-=-=-=-=-=-=-=-
 def print_board(board: list, movements: dict = {}) -> None:
@@ -135,6 +135,7 @@ def game_loop(board: list) -> bool:
 def main():
     user_option = 0
     wins = [0,0]
+    gui = GUI.ChessGUI()
     while user_option != 2:
         user_option = int(input(f"1. {COLORS['blue']}Start Game\n{COLORS['reset']}2. {COLORS['red']}Exit{COLORS['reset']}\n"))
         if user_option == 1:
@@ -151,4 +152,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    board = board.init_board()
+    game = GAME()
+    game.start_game(board)
