@@ -156,3 +156,4 @@ if __name__ == "__main__":
     board = board.init_board()
     game = GAME()
     game.start_game(board)
+    # TODO: fix the pieces x and y

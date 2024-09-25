@@ -10,13 +10,13 @@ class pawn(piece.chest_piece):
         if board[y + add_y][x] == None:
             possibles_moves[(y + add_y, x)] = piece.CAN_MOVE
         try:
-            if board[y + (add_y*2)][x-1].is_black != self.is_black:
-                possibles_moves[(y + (add_y*2), x-1)] = piece.CAN_KILL
+            if board[y + add_y][x-1].is_black != self.is_black:
+                possibles_moves[(y + add_y, x-1)] = piece.CAN_KILL
         except (AttributeError, IndexError):
             pass
         try:
-            if board[y + (add_y*2)][x+1].is_black != self.is_black:
-                possibles_moves[(y + (add_y*2), x+1)] = piece.CAN_KILL
+            if board[y + add_y][x+1].is_black != self.is_black:
+                possibles_moves[(y + add_y, x+1)] = piece.CAN_KILL
         except (AttributeError, IndexError):
             pass
         

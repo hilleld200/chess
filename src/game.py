@@ -22,10 +22,11 @@ class GAME:
         gui.run()
     
     def board_click(self, event):
-        x = event.x 
-        y = event.y 
-        print("board event")
-        print(x, y)
+        x = event.x // SQUARE_SIZE
+        y = event.y // SQUARE_SIZE
+        
+        if (y,x) in self.movement:
+            self.move_piece(self.get_piece(self.selected_piece[0], self.selected_piece[1]), x,y)
         
     def piece_click(self, event):
         piece_label = event.widget
@@ -46,8 +47,6 @@ class GAME:
             return
         
         self.piece_movement(x, y)
-        print("piece event")
-        print(x, y)
         
     def piece_movement(self, x, y):
         piece_to_move = self.board[y][x]
@@ -80,7 +79,8 @@ class GAME:
         piece_to_move = self.get_piece(self.selected_piece[0], self.selected_piece[1])
         if eaten_piece == None:
             GameError("Something went wrong\nin function piece_eat")
-        self.canvas.delete(eaten_piece)
+        self.canvas.delete(eaten_piece.winfo_id())
+        eaten_piece.destroy()
         self.move_piece(piece_to_move, x, y)
         self.reset_movement()
         
@@ -91,10 +91,12 @@ class GAME:
         
     def move_piece(self, piece_to_move, x, y):
         piece_to_move.place(x=x*SQUARE_SIZE, y=y*SQUARE_SIZE)
-        self.color_square(x, y)
         self.is_black_turn = not self.is_black_turn
         self.board[y][x] = self.board[self.selected_piece[1]][self.selected_piece[0]]
         self.board[self.selected_piece[1]][self.selected_piece[0]] = None
+        color = "gray" if (x+y) % 2 == 0 else "white"
+        piece_to_move.config(bg=color)
+        self.reset_movement()
         
         
     
